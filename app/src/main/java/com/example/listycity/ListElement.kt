@@ -12,6 +12,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+
 
 /* Element needs to be object to struct state.
 else static function memory would work too but raises its own complication
@@ -20,14 +24,19 @@ else static function memory would work too but raises its own complication
 
 class ListElement (
     val city: City,
-    var isSelected: Boolean = false
+    isSelected: Boolean = false
 ) {
-
+    var isSelected by mutableStateOf(isSelected)
     @SuppressLint("ComposableNaming")
+
+    private fun clickAction () {
+        isSelected = !isSelected
+    }
+
     @Composable
     fun make () {
         TextButton(
-            onClick = {},
+            onClick = {clickAction()},
             shape = RectangleShape,
             colors = ButtonDefaults.textButtonColors(
                 containerColor = if (isSelected) Color.LightGray else Color.Transparent
