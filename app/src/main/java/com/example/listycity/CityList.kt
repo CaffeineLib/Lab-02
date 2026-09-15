@@ -12,6 +12,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.ui.graphics.RectangleShape
+
+
 
 class CityList (
     private val _cityList:List<City>
@@ -25,21 +30,10 @@ class CityList (
     }
 
     @Composable
-    private fun rowItem(city:City) {
-        Text(
-            text = city.name,
-            fontSize = 20.sp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 18.dp, vertical = 14.dp)
-        )
-    }
-
-    @Composable
     private fun cityLazyLister() {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(items= _cityList) {
-                rowItem(it)
+            items(items= _cityList) {a ->
+                ListElement(a).make()
                 HorizontalDivider(color = Color.LightGray, thickness = 0.5.dp)
             }
         }
