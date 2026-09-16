@@ -14,16 +14,16 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.graphics.RectangleShape
-
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.MutableState
 
 
 class CityList (
-    private val _cityList:List<City>
+    private val _cityList: SnapshotStateList<City>
 ){
-
-//    var selectionCity: Int = 0 // for future use
-
     @Composable
     fun show(){
         cityLazyLister()
@@ -38,5 +38,8 @@ class CityList (
             }
         }
     }
+
+
+
 
 }

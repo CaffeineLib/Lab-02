@@ -1,7 +1,9 @@
 package com.example.listycity
 
+import androidx.compose.runtime.snapshots.SnapshotStateList
+
 class CityArr(){  // not to be confused with a Sh... Arr
-    private val _cityList:ArrayList<City> = ArrayList()
+    private val _cityList: SnapshotStateList<City> = SnapshotStateList()
     init{
         for (i in listOf(
             "Victoria",
@@ -20,31 +22,36 @@ class CityArr(){  // not to be confused with a Sh... Arr
         )){
             _cityList.add(City(i))
         }
-        sort_City()
+        stateSort_City()
     }
 
 
-    private fun sort_City(){
-        _cityList.sortBy {it.name} // define it.name city->city.name // sortBy expects lambda function
+    private fun stateSort_City(){
+        _cityList.sortBy {it.name}
+
+    }
+    fun insert_City(city:City){
+        //states are stupid bags
+        //not failure of the Liskov Substitution Principal perhaps
+        if (!_cityList.any {it.name == city.name}) {
+            val n = _cityList.binarySearchBy(city.name){it.name}
+            _cityList.add(if (n < 0) -n - 1 else n, city)       // Apparently binary serach can return negative numbers requiring inversion
+        }
     }
 
-    fun get_CityArr(): List<City>{
+    fun get_CityArr(): SnapshotStateList<City>{
         return _cityList
     }
 
-    fun add_City(city:City){
-        if (!_cityList.any {it.name == city.name}) {
-            _cityList.add(city)
-            sort_City()
-        }
-    }
 
-    fun kill_City(name:String): Int{
+
+    fun del_CityByName(name:String){
         if (_cityList.any {it.name == name}){
             _cityList.removeAll {it.name ==name}
-            return 0
         }
-        return 1
+    }
+    fun del_CityBySelection(){
+        _cityList.removeAll {it.isSelected}
     }
 }
 

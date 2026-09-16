@@ -40,12 +40,14 @@ import androidx.compose.foundation.layout.Arrangement
 
 class MainActivity : ComponentActivity() {
     val mycities = CityArr()
+    val cityInput = CityInput()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             ListyCityTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+
                     Column(modifier = Modifier.padding(innerPadding)) {
                         Welcome(modifier = Modifier).show()
                         Row(
@@ -54,9 +56,13 @@ class MainActivity : ComponentActivity() {
                                 .padding(horizontal = 10.dp),
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ){
-                            add_Button(modifier = Modifier.weight(1f))
-                            del_Button(modifier = Modifier.weight(1f))
+                            add_Button(cityInput, modifier = Modifier.weight(1f))
+                            del_Button(mycities, modifier = Modifier.weight(1f))
                         }
+                        if (cityInput.visible){
+                            cityInput.inputBox(mycities)
+                        }
+
                         CityList(_cityList = mycities.get_CityArr()).show()
 
                     }
@@ -66,11 +72,18 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// Credit given to Gemini AI. There isnt a propercase method inbuilt to Kotlin
+fun String.toProperCase(): String {
+    return this.lowercase().split(" ").joinToString(" ") { word ->
+        word.replaceFirstChar { it.titlecase() }
+    }
+}
+
 
 @Composable
-fun add_Button(modifier: Modifier){
+fun add_Button(cityInput: CityInput, modifier: Modifier){
     Button(
-        onClick = {},
+        onClick = {cityInput.visible=true},
         modifier = modifier,
         shape = RoundedCornerShape(4.dp)
     ){
@@ -79,9 +92,9 @@ fun add_Button(modifier: Modifier){
 }
 
 @Composable
-fun del_Button(modifier: Modifier){
+fun del_Button(citylist: CityArr, modifier: Modifier){
     Button(
-        onClick = {},
+        onClick = {citylist.del_CityBySelection()},
         modifier = modifier,
         shape = RoundedCornerShape(4.dp)
 
@@ -89,3 +102,4 @@ fun del_Button(modifier: Modifier){
         Text("Erase a city")
     }
 }
+
